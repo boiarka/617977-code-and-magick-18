@@ -1,21 +1,21 @@
 'use strict';
 
 var START_COL_X = 130;
-var WIDTH_RECT = 100;
+var WIDTH_PADDING_RECT = 100;
 var MAX_HEIGHT = 150;
+var WIDTH_RECT = 40;
+var TOP_PADDING = 90;
 
 // максимальный элемент в массиве
-var getMaxElement = function (arr) {
+function getMaxElement(arr) {
   var maxElement = arr[0];
-
   for (var i = 0; i < arr.length; i++) {
     if (arr[i] > maxElement) {
       maxElement = arr[i];
     }
   }
-
   return maxElement;
-};
+}
 
 // случайное число
 function getRandomColor(min, max) {
@@ -24,14 +24,16 @@ function getRandomColor(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
+// рисуем квадрат и тень
+function makeBlocks(ctx, color, x, y, width, height) {
+  ctx.fillStyle = color;
+  ctx.fillRect(x, y, width, height);
+}
 
 window.renderStatistics = function (ctx, names, times) {
   // Квадрат и тень
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-  ctx.fillRect(110, 20, 420, 270);
-
-  ctx.fillStyle = '#fff';
-  ctx.fillRect(100, 10, 420, 270);
+  makeBlocks(ctx, 'rgba(0, 0, 0, 0.7)', 110, 20, 420, 270);
+  makeBlocks(ctx, '#ffffff', 100, 10, 420, 270);
 
   // Выводим текст "Ура вы победили" сверху
   ctx.fillStyle = '#000';
@@ -42,20 +44,22 @@ window.renderStatistics = function (ctx, names, times) {
 
   // Выводим результаты
   var maxTime = getMaxElement(times);
+
   for (var i = 0; i < names.length; i++) {
+    // Имена игроков
     ctx.fillStyle = 'black';
-    ctx.fillText(names[i], START_COL_X + WIDTH_RECT * i, 250);
+    ctx.fillText(names[i], START_COL_X + WIDTH_PADDING_RECT * i, 250);
 
     // Высота максимального результата
     var heightRect = 150 * Math.floor(times[i]) / maxTime;
-    ctx.fillText(Math.floor(times[i]), START_COL_X + WIDTH_RECT * i, 70 + MAX_HEIGHT - heightRect);
+    // Время игроков
+    ctx.fillText(Math.floor(times[i]), START_COL_X + WIDTH_PADDING_RECT * i, TOP_PADDING - 20 + MAX_HEIGHT - heightRect);
 
     if (names[i] === 'Вы') {
-      ctx.fillStyle = 'rgba(255, 0, 0, 1)';
-      ctx.fillRect(START_COL_X + WIDTH_RECT * i, 90 + MAX_HEIGHT - heightRect, 40, heightRect);
+      makeBlocks(ctx, 'rgba(255, 0, 0, 1)', START_COL_X + WIDTH_PADDING_RECT * i, TOP_PADDING + MAX_HEIGHT - heightRect, WIDTH_RECT, heightRect);
     } else {
-      ctx.fillStyle = 'hsla(255, 100%,' + getRandomColor(1, 100) + '%, 1)';
-      ctx.fillRect(START_COL_X + WIDTH_RECT * i, 90 + MAX_HEIGHT - heightRect, 40, heightRect);
+      var colorForAnother = 'hsla(255, 100%,' + getRandomColor(1, 100) + '%, 1)';
+      makeBlocks(ctx, colorForAnother, START_COL_X + WIDTH_PADDING_RECT * i, TOP_PADDING + MAX_HEIGHT - heightRect, WIDTH_RECT, heightRect);
     }
   }
 };
