@@ -26,27 +26,27 @@ function getRandomColor(min, max) {
 
 
 window.renderStatistics = function (ctx, names, times) {
-	// Квадрат и тень
+  // Квадрат и тень
   ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
   ctx.fillRect(110, 20, 420, 270);
 
   ctx.fillStyle = '#fff';
   ctx.fillRect(100, 10, 420, 270);
 
-// Выводим текст "Ура вы победили" сверху
+  // Выводим текст "Ура вы победили" сверху
   ctx.fillStyle = '#000';
   ctx.font = '16px PT Mono';
   ctx.textBaseline = 'hanging';
   ctx.fillText('Ура вы победили!', 115, 30);
   ctx.fillText('Список результатов:', 115, 50);
 
-		// Выводим результаты
+  // Выводим результаты
   var maxTime = getMaxElement(times);
   for (var i = 0; i < names.length; i++) {
     ctx.fillStyle = 'black';
     ctx.fillText(names[i], START_COL_X + WIDTH_RECT * i, 250);
 
-				// Высота максимального результата
+    // Высота максимального результата
     var heightRect = 150 * Math.floor(times[i]) / maxTime;
     ctx.fillText(Math.floor(times[i]), START_COL_X + WIDTH_RECT * i, 70 + MAX_HEIGHT - heightRect);
 
