@@ -51,8 +51,6 @@
     }
   });
 
-
-
   // Отправить форму
   setupSubmitElement.addEventListener('click', function () {
     setupSubmitElement.submit();
@@ -102,7 +100,7 @@
       if (dragged) {
         var onClickPreventDefault = function (evt) {
           evt.preventDefault();
-          dialogHandler.removeEventListener('click', onClickPreventDefault)
+          dialogHandler.removeEventListener('click', onClickPreventDefault);
         };
         dialogHandler.addEventListener('click', onClickPreventDefault);
       }

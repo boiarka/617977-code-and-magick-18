@@ -10,7 +10,7 @@
   var setupFireballWrapElement = document.querySelector('.setup-fireball-wrap');
 
   setupWizardCoatElement.addEventListener('click', function () {
-    var randomColor = COAT_COLORS[window.randomInteger(0, COAT_COLORS.length - 1)];
+    var randomColor = window.COAT_COLORS[window.randomInteger(0, window.COAT_COLORS.length - 1)];
     setupWizardCoatElement.setAttribute('style', 'fill: ' + randomColor);
     var inputCoatColor = document.querySelector('input[name="coat-color"]');
     inputCoatColor.value = randomColor;
@@ -18,7 +18,7 @@
 
 
   setupWizardEyesElement.addEventListener('click', function () {
-    var randomColor = EYES_COLORS[window.randomInteger(0, EYES_COLORS.length - 1)];
+    var randomColor = window.EYES_COLORS[window.randomInteger(0, window.EYES_COLORS.length - 1)];
     setupWizardEyesElement.setAttribute('style', 'fill: ' + randomColor);
     var inputEyesColor = document.querySelector('input[name="eyes-color"]');
     inputEyesColor.value = randomColor;

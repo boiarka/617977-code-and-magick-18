@@ -6,7 +6,7 @@
   window.randomInteger = function (min, max) {
     var rand = min + Math.random() * (max + 1 - min);
     return Math.floor(rand);
-  }
+  };
 
   window.generateRandomData = function (name, secondName, coatColor, eyesColor) {
     var data = [];
@@ -20,5 +20,5 @@
       data.push(newObj);
     }
     return data;
-  }
+  };
 })();
