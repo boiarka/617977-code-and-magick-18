@@ -187,6 +187,16 @@ main
     background: linear-gradient(180deg, #ae340a, #fcb945);
 }
 
+.error {
+    position: fixed;
+    top: 10px;
+    left: 10px; 
+    padding: 10px;
+    background-color: red;
+    color: white;
+    z-index: 999;
+}
+
 .main-section
 {
     box-sizing: border-box;

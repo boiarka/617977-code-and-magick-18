@@ -12,6 +12,39 @@
   var setupCloseElement = document.querySelector('.setup-close');
   var setupSubmitElement = document.querySelector('.setup-submit');
 
+  var HEROES_COUNT = 4;
+  var setupSimilarElement = document.querySelector('.setup-similar');
+  var similarListElement = document.querySelector('.setup-similar-list');
+  var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
+  var errorTemplate = document.querySelector('#error').content.querySelector('.error');
+  var errorElement = errorTemplate.cloneNode(true);
+
+  var renderWizard = function (wizard) {
+    var wizardElement = similarWizardTemplate.cloneNode(true);
+
+    wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
+    wizardElement.querySelector('.wizard-coat').style.fill = wizard.colorCoat;
+    wizardElement.querySelector('.wizard-eyes').style.fill = wizard.colorEyes;
+
+    return wizardElement;
+  }
+
+  setupSimilarElement.classList.remove('hidden');
+
+  var successHandler = function (wizards) {
+    var fragment = document.createDocumentFragment();
+
+    for (var i = 0; i < HEROES_COUNT; i++) {
+      fragment.appendChild(renderWizard(wizards[i]));
+    }
+    similarListElement.appendChild(fragment);
+  };
+
+  var errorHandler = function (errorMessage) {
+    errorElement.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', errorElement);
+  };
+
   var onPopupEscPress = function (evt) {
     if (evt.keyCode === ESC_KEYCODE) {
       closePopup();
@@ -20,6 +53,7 @@
 
   var openPopup = function () {
     setupBlockElement.classList.remove('hidden');
+    window.load(successHandler, errorHandler);
     document.addEventListener('keydown', onPopupEscPress);
   };
 
@@ -52,14 +86,22 @@
   });
 
   // Отправить форму
-  setupSubmitElement.addEventListener('click', function () {
-    setupSubmitElement.submit();
-  });
+  // setupSubmitElement.addEventListener('click', function () {
+  //   setupSubmitElement.submit();
+  // });
 
-  setupSubmitElement.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === ENTER_KEYCODE) {
-      setupSubmitElement.submit();
-    }
+  // setupSubmitElement.addEventListener('keydown', function (evt) {
+  //   if (evt.keyCode === ENTER_KEYCODE) {
+  //     setupSubmitElement.submit();
+  //   }
+  // });
+
+  var formElement = document.querySelector('.setup-wizard-form');
+  formElement.addEventListener('submit', function (evt) {
+    window.save(new FormData(formElement), function (response) {
+      setupDialogElement.classList.add('hidden');
+    }, errorHandler);
+    evt.preventDefault();
   });
 
   // Драг
