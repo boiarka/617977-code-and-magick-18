@@ -4,32 +4,18 @@
 
   var ESC_KEYCODE = 27;
   var ENTER_KEYCODE = 13;
+  var HEROES_COUNT = 4;
 
   var setupDialogElement = document.querySelector('.setup');
   var dialogHandler = setupDialogElement.querySelector('.upload');
   var setupBlockElement = document.querySelector('.setup');
   var setupOpenElement = document.querySelector('.setup-open');
   var setupCloseElement = document.querySelector('.setup-close');
-  var setupSubmitElement = document.querySelector('.setup-submit');
-
-  var HEROES_COUNT = 4;
   var setupSimilarElement = document.querySelector('.setup-similar');
   var similarListElement = document.querySelector('.setup-similar-list');
   var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');
   var errorElement = errorTemplate.cloneNode(true);
-
-  var renderWizard = function (wizard) {
-    var wizardElement = similarWizardTemplate.cloneNode(true);
-
-    wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
-    wizardElement.querySelector('.wizard-coat').style.fill = wizard.colorCoat;
-    wizardElement.querySelector('.wizard-eyes').style.fill = wizard.colorEyes;
-
-    return wizardElement;
-  }
-
-  setupSimilarElement.classList.remove('hidden');
 
   var successHandler = function (wizards) {
     var fragment = document.createDocumentFragment();
@@ -44,6 +30,18 @@
     errorElement.textContent = errorMessage;
     document.body.insertAdjacentElement('afterbegin', errorElement);
   };
+
+  var renderWizard = function (wizard) {
+    var wizardElement = similarWizardTemplate.cloneNode(true);
+
+    wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
+    wizardElement.querySelector('.wizard-coat').style.fill = wizard.colorCoat;
+    wizardElement.querySelector('.wizard-eyes').style.fill = wizard.colorEyes;
+
+    return wizardElement;
+  }
+
+  setupSimilarElement.classList.remove('hidden');
 
   var onPopupEscPress = function (evt) {
     if (evt.keyCode === ESC_KEYCODE) {
@@ -85,16 +83,6 @@
     }
   });
 
-  // Отправить форму
-  // setupSubmitElement.addEventListener('click', function () {
-  //   setupSubmitElement.submit();
-  // });
-
-  // setupSubmitElement.addEventListener('keydown', function (evt) {
-  //   if (evt.keyCode === ENTER_KEYCODE) {
-  //     setupSubmitElement.submit();
-  //   }
-  // });
 
   var formElement = document.querySelector('.setup-wizard-form');
   formElement.addEventListener('submit', function (evt) {
