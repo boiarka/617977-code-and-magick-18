@@ -39,7 +39,7 @@
     wizardElement.querySelector('.wizard-eyes').style.fill = wizard.colorEyes;
 
     return wizardElement;
-  }
+  };
 
   setupSimilarElement.classList.remove('hidden');
 
@@ -86,7 +86,7 @@
 
   var formElement = document.querySelector('.setup-wizard-form');
   formElement.addEventListener('submit', function (evt) {
-    window.save(new FormData(formElement), function (response) {
+    window.save(new FormData(formElement), function () {
       setupDialogElement.classList.add('hidden');
     }, errorHandler);
     evt.preventDefault();

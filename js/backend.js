@@ -1,48 +1,48 @@
+'use strict';
+
 (function () {
-  var URL_SAVE = 'https://js.dump.academy/code-and-magick';
-  var URL_LOAD = 'https://js.dump.academy/code-and-magick/data';
+  var URL_UPLOAD = 'https://js.dump.academy/code-and-magick';
+  var URL = 'https://js.dump.academy/code-and-magick/data';
+  var TIMEOUT = 10000;
+  var XHR_STATUS = 200;
+  var ERROR_CONNECT = 'Произошла ошибка соединения';
 
-  window.save = function (data, onLoad, onError) {
+  var createRequest = function (type, url, onSuccess, onError, data) {
     var xhr = new XMLHttpRequest();
+    var isType = type === 'POST';
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
-        onLoad(xhr.response);
-      } else {
-        onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText)
-      }
-    });
-
-    xhr.open('POST', URL_SAVE);
-    xhr.send(data);
-  };
-
-
-
-
-  window.load = function (onLoad, onError) {
-    var xhr = new XMLHttpRequest();
-    xhr.responseType = 'json';
-
-    xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
-        onLoad(xhr.response);
+      if (xhr.status === XHR_STATUS) {
+        onSuccess(xhr.response);
       } else {
         onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
       }
     });
     xhr.addEventListener('error', function () {
-      onError('Произошла ошибка соединения');
+      onError(ERROR_CONNECT);
     });
     xhr.addEventListener('timeout', function () {
       onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
 
-    xhr.timeout = 10000; // 10s
+    xhr.timeout = TIMEOUT;
+    xhr.open(type, url);
 
-    xhr.open('GET', URL_LOAD);
-    xhr.send();
+    if (isType) {
+      xhr.send(data);
+    } else {
+      xhr.send();
+    }
+
+    return xhr;
   };
 
+  window.load = function (onLoad, onError) {
+    createRequest('GET', URL, onLoad, onError);
+  };
+
+  window.save = function (data, onLoad, onError) {
+    createRequest('POST', URL_UPLOAD, onLoad, onError, data);
+  };
 })();
