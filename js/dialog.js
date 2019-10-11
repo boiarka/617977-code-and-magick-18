@@ -56,10 +56,14 @@
   };
 
   var closePopup = function () {
+    var allSimilarItems = document.querySelectorAll('.setup-similar-item');
     setupBlockElement.classList.add('hidden');
     document.removeEventListener('keydown', onPopupEscPress);
     setupDialogElement.style.top = 80 + 'px';
     setupDialogElement.style.left = 50 + '%';
+    for (var i = 0; i < allSimilarItems.length; i++) {
+      allSimilarItems[i].remove();
+    }
   };
 
   setupCloseElement.addEventListener('click', function () {
