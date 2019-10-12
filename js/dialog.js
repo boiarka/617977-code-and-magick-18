@@ -1,39 +1,20 @@
 'use strict';
 
 (function () {
-
   var ESC_KEYCODE = 27;
   var ENTER_KEYCODE = 13;
-  var HEROES_COUNT = 4;
 
+  var similarListElement = document.querySelector('.setup-similar-list');
   var setupDialogElement = document.querySelector('.setup');
   var dialogHandler = setupDialogElement.querySelector('.upload');
   var setupBlockElement = document.querySelector('.setup');
   var setupOpenElement = document.querySelector('.setup-open');
   var setupCloseElement = document.querySelector('.setup-close');
-  var setupSimilarElement = document.querySelector('.setup-similar');
-  var similarListElement = document.querySelector('.setup-similar-list');
   var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
-  var errorTemplate = document.querySelector('#error').content.querySelector('.error');
-  var errorElement = errorTemplate.cloneNode(true);
-
-  var successHandler = function (wizards) {
-    var fragment = document.createDocumentFragment();
-
-    for (var i = 0; i < HEROES_COUNT; i++) {
-      fragment.appendChild(renderWizard(wizards[i]));
-    }
-    similarListElement.appendChild(fragment);
-  };
-
-  var errorHandler = function (errorMessage) {
-    errorElement.textContent = errorMessage;
-    document.body.insertAdjacentElement('afterbegin', errorElement);
-  };
+  var similarElement = document.querySelector('.setup-similar');
 
   var renderWizard = function (wizard) {
     var wizardElement = similarWizardTemplate.cloneNode(true);
-
     wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
     wizardElement.querySelector('.wizard-coat').style.fill = wizard.colorCoat;
     wizardElement.querySelector('.wizard-eyes').style.fill = wizard.colorEyes;
@@ -41,7 +22,17 @@
     return wizardElement;
   };
 
-  setupSimilarElement.classList.remove('hidden');
+
+  window.render = function (data) {
+    var takeNumber = data.length > 4 ? 4 : data.length;
+    similarListElement.innerHTML = '';
+    for (var i = 0; i < takeNumber; i++) {
+      similarListElement.appendChild(renderWizard(data[i]));
+    }
+
+    similarElement.classList.remove('hidden');
+  };
+
 
   var onPopupEscPress = function (evt) {
     if (evt.keyCode === ESC_KEYCODE) {
@@ -51,19 +42,14 @@
 
   var openPopup = function () {
     setupBlockElement.classList.remove('hidden');
-    window.load(successHandler, errorHandler);
     document.addEventListener('keydown', onPopupEscPress);
   };
 
   var closePopup = function () {
-    var allSimilarItems = document.querySelectorAll('.setup-similar-item');
     setupBlockElement.classList.add('hidden');
     document.removeEventListener('keydown', onPopupEscPress);
     setupDialogElement.style.top = 80 + 'px';
     setupDialogElement.style.left = 50 + '%';
-    for (var i = 0; i < allSimilarItems.length; i++) {
-      allSimilarItems[i].remove();
-    }
   };
 
   setupCloseElement.addEventListener('click', function () {
@@ -92,7 +78,7 @@
   formElement.addEventListener('submit', function (evt) {
     window.save(new FormData(formElement), function () {
       setupDialogElement.classList.add('hidden');
-    }, errorHandler);
+    }, window.errorHandler);
     evt.preventDefault();
   });
 
